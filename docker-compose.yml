@@ -1,0 +1,109 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: sahada-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: sahada
+      MYSQL_USER: sahada
+      MYSQL_PASSWORD: sahada
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - sahada_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    container_name: sahada-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - sahada_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sahada-backend
+    restart: unless-stopped
+    working_dir: /var/www/html
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://127.0.0.1:8000
+      FRONTEND_URL: http://localhost:3000
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: sahada
+      DB_USERNAME: sahada
+      DB_PASSWORD: sahada
+      QUEUE_CONNECTION: redis
+      CACHE_STORE: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_CLIENT: predis
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: >
+      sh -c "composer install --no-interaction --prefer-dist
+      && php artisan key:generate --force --no-interaction || true
+      && php artisan migrate --force
+      && php artisan serve --host=0.0.0.0 --port=8000"
+
+  queue:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sahada-queue
+    restart: unless-stopped
+    working_dir: /var/www/html
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: sahada
+      DB_USERNAME: sahada
+      DB_PASSWORD: sahada
+      QUEUE_CONNECTION: redis
+      CACHE_STORE: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_CLIENT: predis
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    command: >
+      sh -c "composer install --no-interaction --prefer-dist
+      && php artisan queue:work redis --tries=3 --timeout=180"
+
+volumes:
+  sahada_mysql:
+  sahada_redis:
