@@ -278,8 +278,8 @@ OVERPASS;
 
         foreach (self::ENDPOINTS as $endpoint) {
             try {
-                $response = Http::timeout(40)
-                    ->connectTimeout(8)
+                $response = Http::timeout(22)
+                    ->connectTimeout(6)
                     ->asForm()
                     ->withHeaders([
                         'User-Agent' => 'Sahada/1.0 (education; local thesis project)',

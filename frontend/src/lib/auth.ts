@@ -10,6 +10,8 @@ type AuthState = {
   hydrated: boolean;
   online: boolean;
   ensureSession: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 };
 
 export const useAuth = create<AuthState>((set) => ({
@@ -56,6 +58,31 @@ export const useAuth = create<AuthState>((set) => ({
       token: null,
       hydrated: true,
       online: false,
+    });
+  },
+  async login(email: string, password: string) {
+    const { data } = await api.post("/auth/login", { email, password });
+    localStorage.setItem("meridyen_token", data.token);
+    localStorage.removeItem("maplead_token");
+    set({ user: data.user, token: data.token, hydrated: true, online: true });
+  },
+  async logout() {
+    try {
+      await api.post("/auth/logout");
+    } catch {
+    }
+    localStorage.removeItem("meridyen_token");
+    localStorage.removeItem("maplead_token");
+    set({
+      user: {
+        id: 0,
+        name: "Önizleme",
+        email: "onizleme@sahada",
+        role: "user",
+      },
+      token: null,
+      online: false,
+      hydrated: true,
     });
   },
 }));

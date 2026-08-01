@@ -71,6 +71,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             <Link href="/notifications" className="nav-ghost">
               Bildirimler
             </Link>
+            <Link href="/giris" className="nav-cta">
+              Giriş
+            </Link>
             <a className="nav-cta" href="/#arama">
               Başlat
             </a>

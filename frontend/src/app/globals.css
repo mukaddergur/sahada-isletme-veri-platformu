@@ -4355,3 +4355,113 @@ button.badge-btn:hover {
   .turkey-map-box { height: 300px; }
   .star-filter { justify-content: center; }
 }
+
+.auth-page {
+  width: min(480px, calc(100% - 36px));
+  margin: 36px auto 80px;
+  padding-top: 12px;
+}
+.auth-card {
+  background: rgba(255, 252, 248, 0.92);
+  border: 1px solid rgba(251, 191, 150, 0.45);
+  border-radius: 28px;
+  padding: 32px 28px 28px;
+  box-shadow: 0 18px 48px rgba(90, 48, 28, 0.08);
+}
+.auth-kicker {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ea580c;
+}
+.auth-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.auth-brand .brand-mark {
+  width: 28px;
+  height: 28px;
+}
+.auth-brand-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #1a1210;
+}
+.auth-brand-name span {
+  color: #fb923c;
+}
+.auth-card h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.1rem);
+  font-weight: 800;
+  color: #1a1210;
+  letter-spacing: -0.03em;
+}
+.auth-lead {
+  margin: 10px 0 22px;
+  color: #6b5348;
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+.auth-form {
+  display: grid;
+  gap: 14px;
+}
+.auth-form label {
+  display: grid;
+  gap: 6px;
+}
+.auth-form label span {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #3b2822;
+}
+.auth-form input {
+  width: 100%;
+  border: 1px solid rgba(90, 48, 28, 0.14);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  background: #fff;
+  color: #1a1210;
+  outline: none;
+}
+.auth-form input:focus {
+  border-color: rgba(234, 88, 12, 0.55);
+  box-shadow: 0 0 0 4px rgba(251, 146, 60, 0.18);
+}
+.auth-error {
+  margin: 0;
+  color: #b91c1c;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.auth-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: #1a1210;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(26, 18, 16, 0.22);
+}
+.auth-btn:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+.auth-btn:hover:not(:disabled) {
+  background: #000;
+}
+.top-right .nav-ghost.on {
+  background: rgba(26, 18, 16, 0.08);
+}

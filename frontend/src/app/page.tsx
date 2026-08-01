@@ -292,9 +292,9 @@ export default function OtomasyonSayfasi() {
     const startedAt = Date.now();
     const timer = setInterval(async () => {
       try {
-        if (Date.now() - startedAt > 180000) {
+        if (Date.now() - startedAt > 300000) {
           setCalisiyor(false);
-          setHata("Tarama 3 dakikadan uzun sürdü / yanıt gelmedi. Sayfayı yenileyip tekrar Başlat deneyin.");
+          setHata("Tarama 5 dakikadan uzun sürdü. OSM yavaş olabilir — tekrar Başlat deneyin.");
           return;
         }
         const { data } = await api.get("/scans", { timeout: 10000 });
